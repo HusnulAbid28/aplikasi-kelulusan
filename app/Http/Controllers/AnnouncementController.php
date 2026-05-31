@@ -12,7 +12,11 @@ class AnnouncementController extends Controller
     public function index()
     {
         $student = Auth::guard('student')->user();
-        $message = Setting::where('key', 'principal_message')->value('value');
+        if ($student->status == 'LULUS') {
+            $message = Setting::where('key', 'principal_message')->value('value');
+        } else {
+            $message = Setting::where('key', 'principal_message_delayed')->value('value');
+        }
         $academicYear = Setting::where('key', 'academic_year')->value('value');
         $frontendTheme = Setting::where('key', 'frontend_theme')->value('value') ?? 'dark';
 
@@ -22,6 +26,9 @@ class AnnouncementController extends Controller
     public function downloadPdf()
     {
         $student = Auth::guard('student')->user();
+        if ($student->status != 'LULUS') {
+            abort(403, 'Hanya siswa lulus yang dapat mengunduh surat keterangan.');
+        }
         $message = Setting::where('key', 'principal_message')->value('value');
         $academicYear = Setting::where('key', 'academic_year')->value('value');
         

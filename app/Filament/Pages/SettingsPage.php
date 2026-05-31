@@ -18,6 +18,7 @@ class SettingsPage extends Page implements \Filament\Forms\Contracts\HasForms
         $this->form->fill([
             'announcement_datetime' => \App\Models\Setting::where('key', 'announcement_datetime')->value('value'),
             'principal_message' => \App\Models\Setting::where('key', 'principal_message')->value('value'),
+            'principal_message_delayed' => \App\Models\Setting::where('key', 'principal_message_delayed')->value('value'),
             'school_logo' => \App\Models\Setting::where('key', 'school_logo')->value('value'),
             'academic_year' => \App\Models\Setting::where('key', 'academic_year')->value('value'),
             'frontend_theme' => \App\Models\Setting::where('key', 'frontend_theme')->value('value') ?? 'dark',
@@ -49,8 +50,12 @@ class SettingsPage extends Page implements \Filament\Forms\Contracts\HasForms
                     ->label('Tanggal & Waktu Pengumuman')
                     ->required(),
                 \Filament\Forms\Components\Textarea::make('principal_message')
-                    ->label('Pesan Kepala Sekolah')
-                    ->rows(5)
+                    ->label('Pesan Kepala Sekolah (LULUS)')
+                    ->rows(4)
+                    ->required(),
+                \Filament\Forms\Components\Textarea::make('principal_message_delayed')
+                    ->label('Pesan Kepala Sekolah (DITANGGUHKAN)')
+                    ->rows(4)
                     ->required(),
             ])
             ->statePath('data');
@@ -61,6 +66,7 @@ class SettingsPage extends Page implements \Filament\Forms\Contracts\HasForms
         $data = $this->form->getState();
         \App\Models\Setting::updateOrCreate(['key' => 'announcement_datetime'], ['value' => $data['announcement_datetime']]);
         \App\Models\Setting::updateOrCreate(['key' => 'principal_message'], ['value' => $data['principal_message']]);
+        \App\Models\Setting::updateOrCreate(['key' => 'principal_message_delayed'], ['value' => $data['principal_message_delayed']]);
         \App\Models\Setting::updateOrCreate(['key' => 'academic_year'], ['value' => $data['academic_year']]);
         \App\Models\Setting::updateOrCreate(['key' => 'frontend_theme'], ['value' => $data['frontend_theme']]);
         if (isset($data['school_logo'])) {
