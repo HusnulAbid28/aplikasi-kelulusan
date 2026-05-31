@@ -26,6 +26,9 @@ class AdminPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('admin')
+            ->brandName('Pengumuman Kelulusan')
+            ->brandLogo(asset('storage/logos/01KSZJDK4YFMYPJ3V52CJW3V53.png'))
+            ->favicon(asset('storage/logos/01KSZJDK4YFMYPJ3V52CJW3V53.png'))
             ->path('portal-admin-kelulusan')
             ->login()
             ->colors([
