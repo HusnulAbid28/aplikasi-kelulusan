@@ -44,9 +44,11 @@ class StudentAuthController extends Controller
         return back()->withErrors(['message' => 'NISN atau Password salah.']);
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
         Auth::guard('student')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('student.login');
     }
 }
